@@ -1,0 +1,32 @@
+name: Deadline Checker
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch: {}
+
+jobs:
+  check-deadlines:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger deadline check
+        run: |
+          response=$(curl -s -w "\n%{http_code}" -X POST \
+            "${{ secrets.BACKEND_URL }}/api/cron/check-deadlines" \
+            -H "X-API-Key: ${{ secrets.CRON_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            --max-time 120 \
+            --retry 3 \
+            --retry-delay 30 \
+            --retry-all-errors)
+
+          http_code=$(echo "$response" | tail -1)
+          body=$(echo "$response" | head -n -1)
+
+          echo "Status: $http_code"
+          echo "Response: $body"
+
+          if [ "$http_code" -ne 200 ]; then
+            echo "::error::Deadline check failed with status $http_code"
+            exit 1
+          fi

@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(NODE_OPTIONS=\"\" npx create-vite@latest *)",
+      "Bash(NODE_OPTIONS=\"\" npm install)",
+      "Bash(NODE_OPTIONS=\"\" npm install react-router-dom @tanstack/react-query axios)",
+      "Bash(NODE_OPTIONS=\"\" npm install tailwindcss @tailwindcss/vite)",
+      "Bash(NODE_OPTIONS=\"\" npx shadcn@latest init -d)",
+      "Bash(NODE_OPTIONS=\"\" npx shadcn@latest add button card input label dialog toast switch textarea badge separator dropdown-menu)",
+      "Bash(NODE_OPTIONS=\"\" npm run build)",
+      "Bash(NODE_OPTIONS=\"\" npx tsc --version)",
+      "Bash(pip3 install *)",
+      "Bash(npx tsc *)",
+      "Bash(./node_modules/.bin/tsc --noEmit)",
+      "Bash(node ./node_modules/typescript/lib/tsc.js --noEmit)",
+      "Bash(env)",
+      "Bash(NODE_OPTIONS=\"\" node *)",
+      "Bash(NODE_OPTIONS=\"\" npx vite build)",
+      "Bash(python3 -c \"from app.main import app; print\\('FastAPI app loaded successfully'\\); print\\(f'Routes: {len\\(app.routes\\)}'\\)\")",
+      "Bash(curl -s http://localhost:8000/api/health)",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -s -X POST http://localhost:8000/api/auth/login -H 'Content-Type: application/json' -d '{\"email\":\"test@test.com\",\"password\":\"testpass123\"}')",
+      "Bash(NODE_OPTIONS=\"\" npm run dev)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173/)",
+      "Bash(NODE_OPTIONS=\"\" npx vite --port 5173)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\" http://localhost:5173/)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\" http://localhost:5173/api/health)",
+      "Bash(lsof -ti:8000 -ti:5173 -ti:5174)",
+      "Bash(xargs kill -9)"
+    ]
+  }
+}
