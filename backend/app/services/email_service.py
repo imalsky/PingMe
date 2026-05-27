@@ -16,7 +16,7 @@ BREVO_API_URL = "https://api.brevo.com/v3/smtp/email"
 
 class EmailService:
     def __init__(self, api_key: str, frontend_url: str) -> None:
-        self.api_key = api_key
+        self.api_key = api_key.strip()
         self.frontend_url = frontend_url
 
     async def send_email(
