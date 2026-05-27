@@ -60,6 +60,12 @@ async def create_contact(
     db.add(contact)
     await db.flush()
 
+    email_service = EmailService(
+        api_key=settings.BREVO_API_KEY,
+        frontend_url=settings.FRONTEND_URL,
+    )
+    await email_service.send_test_email(user=current_user, contact=contact)
+
     return contact
 
 

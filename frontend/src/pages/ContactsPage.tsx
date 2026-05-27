@@ -54,7 +54,7 @@ export function ContactsPage() {
       return data;
     },
     onSuccess: () => {
-      toast.success("Contact added successfully");
+      toast.success("Contact added — a welcome email has been sent");
       queryClient.invalidateQueries({ queryKey: ["contacts"] });
       setIsAddOpen(false);
     },
