@@ -6,11 +6,13 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.config import settings
 from app.database import get_db
 from app.dependencies import get_current_user
 from app.models.contact import Contact
 from app.models.user import User
 from app.schemas.contact import ContactCreate, ContactResponse, ContactUpdate
+from app.services.email_service import EmailService
 
 router = APIRouter(prefix="/api/contacts", tags=["contacts"])
 
@@ -90,6 +92,39 @@ async def update_contact(
 
     await db.flush()
     return contact
+
+
+@router.post("/{contact_id}/test-email")
+async def send_test_email(
+    contact_id: uuid.UUID,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, str]:
+    result = await db.execute(
+        select(Contact).where(
+            Contact.id == contact_id,
+            Contact.user_id == current_user.id,
+        )
+    )
+    contact = result.scalar_one_or_none()
+    if contact is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Contact not found",
+        )
+
+    email_service = EmailService(
+        api_key=settings.BREVO_API_KEY,
+        frontend_url=settings.FRONTEND_URL,
+    )
+    sent = await email_service.send_test_email(user=current_user, contact=contact)
+    if not sent:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail="Failed to send test email",
+        )
+
+    return {"detail": "Test email sent"}
 
 
 @router.delete("/{contact_id}", status_code=status.HTTP_204_NO_CONTENT)

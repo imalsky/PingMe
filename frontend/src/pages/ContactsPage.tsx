@@ -20,6 +20,7 @@ import {
   Loader2Icon,
   UsersIcon,
   MailIcon,
+  SendIcon,
 } from "lucide-react";
 
 type Contact = {
@@ -91,6 +92,18 @@ export function ContactsPage() {
     },
     onError: () => {
       toast.error("Could not remove contact. Please try again.");
+    },
+  });
+
+  const testEmailMutation = useMutation({
+    mutationFn: async (id: string) => {
+      await api.post(`/api/contacts/${id}/test-email`);
+    },
+    onSuccess: () => {
+      toast.success("Test email sent");
+    },
+    onError: () => {
+      toast.error("Could not send test email. Please try again.");
     },
   });
 
@@ -174,6 +187,19 @@ export function ContactsPage() {
                 </div>
 
                 <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => testEmailMutation.mutate(contact.id)}
+                    disabled={testEmailMutation.isPending}
+                  >
+                    {testEmailMutation.isPending ? (
+                      <Loader2Icon className="size-3.5 animate-spin" />
+                    ) : (
+                      <SendIcon className="size-3.5" />
+                    )}
+                    Test
+                  </Button>
                   <Button
                     variant="outline"
                     size="sm"

@@ -214,3 +214,65 @@ class EmailService:
 </html>"""
 
         return await self.send_email(contact.email, contact.name, subject, html_content)
+
+    async def send_test_email(
+        self,
+        user: User,
+        contact: Contact,
+    ) -> bool:
+        subject = f"PingMe: Test notification from {user.name}"
+        html_content = f"""\
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin:0; padding:0; background-color:#f4f4f7; font-family:Arial, Helvetica, sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f7; padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="560" cellpadding="0" cellspacing="0" style="background-color:#ffffff; border-radius:8px; overflow:hidden;">
+          <tr>
+            <td style="background-color:#3b82f6; padding:24px 32px;">
+              <h1 style="margin:0; color:#ffffff; font-size:24px;">PingMe</h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:32px;">
+              <h2 style="margin:0 0 16px; color:#1f2937; font-size:20px;">
+                This is a test notification
+              </h2>
+              <p style="margin:0 0 16px; color:#4b5563; font-size:16px; line-height:1.5;">
+                Hello {contact.name},
+              </p>
+              <p style="margin:0 0 16px; color:#4b5563; font-size:16px; line-height:1.5;">
+                <strong>{user.name}</strong> has added you as an emergency contact on
+                PingMe, a wellness check service. This is a test email to confirm
+                that notifications are working correctly.
+              </p>
+              <p style="margin:0 0 16px; color:#4b5563; font-size:16px; line-height:1.5;">
+                If {user.name} ever misses a scheduled check-in, you will receive an
+                email asking you to reach out and make sure they are okay.
+              </p>
+              <div style="background-color:#f0fdf4; border-left:4px solid #22c55e; padding:16px; border-radius:4px;">
+                <p style="margin:0; color:#166534; font-size:14px;">
+                  No action needed — this is just a test.
+                </p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#f9fafb; padding:16px 32px; border-top:1px solid #e5e7eb;">
+              <p style="margin:0; color:#9ca3af; font-size:12px;">
+                You're receiving this because {user.name} listed you as an emergency
+                contact on PingMe. If you believe this was sent in error, please
+                disregard this message.
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>"""
+
+        return await self.send_email(contact.email, contact.name, subject, html_content)
