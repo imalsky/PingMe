@@ -117,11 +117,17 @@ async def send_test_email(
         api_key=settings.BREVO_API_KEY,
         frontend_url=settings.FRONTEND_URL,
     )
-    sent = await email_service.send_test_email(user=current_user, contact=contact)
+    try:
+        sent = await email_service.send_test_email(user=current_user, contact=contact)
+    except Exception as exc:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail=f"Email service error: {exc}",
+        )
     if not sent:
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="Failed to send test email",
+            detail="Failed to send test email. Check that BREVO_API_KEY is configured.",
         )
 
     return {"detail": "Test email sent"}

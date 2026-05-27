@@ -102,8 +102,9 @@ export function ContactsPage() {
     onSuccess: () => {
       toast.success("Test email sent");
     },
-    onError: () => {
-      toast.error("Could not send test email. Please try again.");
+    onError: (error: any) => {
+      const detail = error?.response?.data?.detail;
+      toast.error(detail || "Could not send test email. Please try again.");
     },
   });
 
