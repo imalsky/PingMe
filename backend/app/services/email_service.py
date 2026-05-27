@@ -31,7 +31,7 @@ class EmailService:
             return False
 
         payload = {
-            "sender": {"name": "PingMe", "email": "noreply@pingme.app"},
+            "sender": {"name": "PingMe", "email": "isaacmalsky@gmail.com"},
             "to": [{"email": to_email, "name": to_name}],
             "subject": subject,
             "htmlContent": html_content,
